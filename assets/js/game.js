@@ -5,11 +5,24 @@ var randomNumber = function(min, max) {
   return value;
 };
 
+// function to set name
+var getPlayerName = function() {
+  var name = "";
+
+  while (name === "" || name === null){
+    name = prompt("What is your robot's name?");
+  }
+  console.log("Your robot's name is " + name);
+  return name;
+};
+
+/* GAME INFORMATION / VARIABLES */
+
 var playerInfo = {
-  name: window.prompt ("What is your robot's name?"),
+  name: getPlayerName(),
   health: 100,
   attack: 10,
-  money: 10
+  money: 10,
   reset: function() {
     this.health = 100;
     this.money = 10;
@@ -69,7 +82,7 @@ var fight = function (enemy) {
       // if yes (true_, leave right
       if (confirmSkip) {
         window.alert (
-          playerInfo.name + ' has declined to skip this fight. Goodbye!');
+          playerInfo.name + ' has decided to skip this fight. Goodbye!');
         // subtract mnoney from playerInfo.money for skipping
         playerInfo.money = Math.max(0, playerInfo.money - 10);
         console.log ('playerInfo.money', playerInfo.money);
