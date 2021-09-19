@@ -41,14 +41,28 @@ var fightOrSkip = function() {
 
 // fight function (now with parameter for enemy's object holding name, health, and attack)
 var fight = function (enemy) {
+
+  // keep track of who goes first
+  var isPlayerTurn = true;
+
+  // randonly change turn order
+  if (Math.random() > 0.5) {
+    isPlayerTurn = false;
+  }
   
   // repeat and execute as long as the enemy-robot is alive
   while (playerInfo.health > 0 && enemy.health > 0) {
-    // if player picks "skip" confirm and then stop the loop
+    if (isPlayerTurn) {}
+      // ask player if they'd like to fight or skip using FightOrSkip
+      if (fightOrSkip()) {
+        // if true, leave fight by breaking loop
+        break;
+      }
     
     // generate random damage value based on player's attack power
     var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
 
+    // remove enemy's health by subtracting the amount we set in the damage variable
     enemy.health = Math.max(0, enemy.health - damage);
     console.log(
       playerInfo.name + ' attacked ' + enemy.name + '. ' + enemy.name + ' now has ' + enemy.health + ' health remaining.'
@@ -67,9 +81,11 @@ var fight = function (enemy) {
       window.alert (enemy.name + ' still has ' + enemy.health + ' health left.');
     }
 
-    // remove players's health by subtracting the amount set in the enemy.attack variable
+    // player gets attacked first
+  } else {
     var damage = randomNumber(enemy.attack - 3, enemy.attack);
 
+    // remove players's health by subtracting the amount set in the enemy.attack variable    
     playerInfo.health = Math.max(0, playerInfo.health - damage);
 
     console.log (
@@ -89,10 +105,11 @@ var fight = function (enemy) {
       // leave while() loop if player is dead
       break;
     } else {
-      window.alert (
-        playerInfo.name + ' still has ' + playerInfo.health + ' health left.'
-      );
+      window.alert (playerInfo.name + ' still has ' + playerInfo.health + ' health left.'
+      )
     }
+    // switch turn order for next round
+    isPlayerTurn = !isPlayerTurn;
   }
 };
 
@@ -105,6 +122,9 @@ var startGame = function () {
 
   // fight each enemy-robot by looping over them and fighting them one at a timwe
   for (var i = 0; i < enemyInfo.length; i++) {
+    // check player stats
+    console.log(playerInfo);
+
     //if player is still alive, keep fighting
     if (playerInfo.health > 0) {
       // let player know what round they are in, remember that arrays start at 0 so it needs to have 1 added to it
@@ -113,8 +133,7 @@ var startGame = function () {
       // pick new enemy to fight based on the index of the enemy.names array
       var pickedEnemyObj = enemyInfo[i];
 
-      // reset enemy.health berfore starting new fight
-      // function to generate random numeric value
+      // set enemy.health berfore starting new fight - function to generate random numeric value
       pickedEnemyObj.health = randomNumber(40, 60)
 
       // pass the pickedenemy.name variable's value into the fight function, where it will assume the value of the enemy.name parameter
